@@ -3,85 +3,87 @@ Ext.define('Demo.controller.Main', {
     extend: 'Ext.app.Controller',
 
     config: {
-        views: ['Loader'],
+        views: ['Navigation', 'UsersList', 'UserDetails'],
+        stores: ['Users'],
         refs: {
-            loader: {
-                xtype: 'loader',
+            navigation: {
                 autoCreate: true,
-                selector: 'viewport loader'
+                xtype: 'navigation',
+                selector: 'viewport navigation'
             },
-            messages: {
+            usersList: {
                 autoCreate: true,
-                xtype: 'messages',
-                selector: 'viewport messages'
+                xtype: 'userslist',
+                selector: 'viewport navigation userslist'
             },
-            authentication: {
+            userDetails: {
                 autoCreate: true,
-                xtype: 'authentication',
-                selector: 'viewport authentication'
+                xtype: 'userdetails',
+                selector: 'viewport navigation userdetails'
             }
         },
         control: {
-
-        },
-        before: {
-
+            navigation: {
+                beforepop: 'onNavigationBeforePop'
+            },
+            usersList: {
+                itemtap: 'onUsersListItemTap'
+            }
         },
         routes: {
-            '': 'showLoader',
-            'messages': 'showMessages',
-            'authentication/:type': 'showAuthentication'
+            '': 'showUsersList',
+            'user/:id': 'showUserDetails'
+        },
+        before: {
+            showUsersList: ['checkSomething']
         }
     },
 
-    init: function() {
-        Demo.utils.Io.on('ioready', this.onIoReady, this);
-        Demo.utils.Io.init();
+    launch: function() {
+        var navigation = this.getNavigation();
+
+        Ext.Viewport.add(navigation);
     },
 
-    showLoader: function() {
-        var loader = this.getLoader();
-
-        Ext.Viewport.setActiveItem(loader);
+    checkSomething: function(action) {
+        // Do something useful before rendering users list...
+        action.resume();
     },
 
-    showMessages: function() {
-        console.log('showMessages', this, arguments);
-        var panel = this.getMessages(),
-            store = panel.getStore();
+    showUsersList: function() {
+        console.log('showUsersList');
+        var usersList = this.getUsersList(),
+            navigation = this.getNavigation(),
+            item = navigation.getActiveItem();
 
-        Ext.Viewport.animateActiveItem(panel, {
-            type: 'slide',
-            direction: 'left',
-            duration: 500
-        });
-        store.load();
-        store.sync(function() {
-            console.log('SYNC CALLBACK', this, arguments);
-        });
-    },
-
-    showAuthentication: function(type) {
-        console.log('showAuthentication', this, arguments);
-        var panel = this.getAuthentication();
-
-        Ext.Viewport.animateActiveItem(panel, {
-            type: 'fade'
-            // direction: 'left',
-            // duration: 500
-        });
-    },
-
-    onIoReady: function() {
-        var io = Demo.utils.Io,
-            user = io.getUser();
-
-        console.log('onIoReady', user);
-        if (!user) {
-            this.redirectTo('authentication/login');
-        } else {
-            this.redirectTo('messages');
+        if (item && item.xtype === 'userdetails') {
+            navigation.pop();
         }
+
+        navigation.push(usersList);
+    },
+
+    showUserDetails: function(id) {
+        var store = Ext.getStore('usersStore'),
+            userDetails = this.getUserDetails(),
+            navigation = this.getNavigation(),
+            record = store.getById(id);
+
+        navigation.push(userDetails);
+        userDetails.setData(record.data);
+    },
+
+    onNavigationBeforePop: function(navigation) {
+        var action = new Ext.app.Action({url: ''}),
+            history = this.getApplication().getHistory();
+
+        history.add(action, true);
+    },
+
+    onUsersListItemTap: function(list, index, el, record) {
+        var id = record.getId();
+
+        this.redirectTo('user/' + id);
     }
 
 });
