@@ -1,7 +1,11 @@
 .slides.template-default > article:not(.nobackground):not(.biglogo) {
-	background: url(img/revolunet-logo-small.png) 710px 625px no-repeat;
+	background: white url(../img/revolunet-logo.png) 690px 625px no-repeat;
 }
 
 .slides.template-default article.biglogo {
-  background: white url(images/sencha-logo.png) 50% 50% no-repeat;
+  background: white url(../img/sencha-logo.png) 50% 50% no-repeat;
+}
+
+h1 {
+  margin-top: 50px;
 }

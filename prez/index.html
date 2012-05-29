@@ -14,11 +14,116 @@
 
         <section class='slides layout-regular template-default'>
 
+            <!-- SLIDE 1 -->
             <article class='biglogo'></article>
 
+            <!-- SLIDE 2 -->
             <article>
-                <h1>Title Goes Here Up<br>To Two Lines</h1>
-                <p>Sergey Brin<br>May 10, 2011</p>
+                <h1 style="margin-top: 150px">Sencha Touch 2<br>Navigation & Routes</h1>
+                <p>Gary van Woerkens<br>May 29, 2012</p>
+            </article>
+
+            <!-- SLIDE 3 -->
+            <article>
+                <img src="img/screenshots/navigationview.png" style="position: absolute; right: 20px; top: 200px" />
+                <h1>Navigation View</h1>
+                <ul>
+                    <li><b>What is it ?</b></li>
+                    <ul>
+                        <li>Ext.Container with card layout</li>
+                    </ul>
+                    <br>
+                    <li><b>Why is it useful ?</b></li>
+                    <ul>
+                        <li>Nested cards</li>
+                        <li>Card autoremove</li>
+                        <li>Easy to use (push/pop)</li>
+                    </ul>
+                    <br>
+                    <li><b>How does it work ?</b></li>
+                </ul>
+            </article>
+
+            <!-- SLIDE 4 -->
+            <article class='smaller'>
+                <h1>Navigation view example</h1>
+                <pre>var view = Ext.create('Ext.NavigationView', {
+    items: [{
+        title: 'First',
+        items: [{
+            xtype: 'button',
+            text: 'Push a new view!',
+            handler: function() {
+                // Use the push() method to push another view.
+                // It works much like add() or setActiveItem().
+                // It accepts a view instance, or you can give it a view config.
+                view.push({
+                    title: 'Second',
+                    html: 'Second view!'
+                });
+            }
+        }]
+    }]
+});</pre>
+            </article>
+
+            <!-- SLIDE 5 -->
+            <article>
+                <h1>Routes (#)</h1>
+                <ul>
+                    <li><b>What is it ?</b></li>
+                    <ul>
+                        <li>URL anchors</li>
+                    </ul>
+                    <img src="img/screenshots/routes.png" style="" />
+                    <br><br>
+                    <li><b>Why is it useful ?</b></li>
+                    <ul>
+                        <li>Links a part of application</li>
+                        <li>Restores application state</li>
+                        <li>Facilitates debug</li>
+                    </ul>
+                    <br>
+                    <li><b>How does it work ?</b></li>
+                </ul>
+            </article>
+
+            <!-- SLIDE 6 -->
+            <article class='smaller'>
+                <h1>Routes example</h1>
+                <pre>Ext.define('MyApp.controller.Users', {
+    extend: 'Ext.app.Controller',
+
+    config: {
+        routes: {
+            'login': 'showLogin',
+            'user/:id': 'showUserById'
+        }
+    },
+
+    showLogin: function() { ... },
+
+    showUserById: function(id) { ... }
+});</pre>
+            </article>
+
+            <!-- SLIDE 7 -->
+            <article>
+                <h1>Mixin' Navigation & Routes</h1>
+                <ul>
+                    <li><b>How to make it works together ?</b></li>
+                    <ul>
+                        <li>Create navigation view</li>
+                        <li>Create nested views</li>
+                        <li>Hook to navigation back/pop process</li>
+                    </ul>
+                    <br>
+                    <li><b>Demo time !</b></li>
+                    <ul>
+                        <li>Wifi: login / pass</li>
+                        <li>Demo url: http://mydemo.com</li>
+                    </ul>
+                </ul>
             </article>
 
         </section>
