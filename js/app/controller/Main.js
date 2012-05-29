@@ -58,9 +58,9 @@ Ext.define('Demo.controller.Main', {
 
         if (item && item.xtype === 'userdetails') {
             navigation.pop();
+        } else {
+            navigation.push(usersList);
         }
-
-        navigation.push(usersList);
     },
 
     showUserDetails: function(id) {
